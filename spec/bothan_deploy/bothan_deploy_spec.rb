@@ -6,6 +6,14 @@ module BothanDeploy
       get '/'
       expect(last_response).to be_redirect
     end
+
+    it 'shows the form' do
+      login!
+      get '/'
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to match /Deploy your own Bothan/
+    end
+
     it 'queues a deploy job' do
       login!
       post '/deploy', { 'foo' => 'bar' }, { 'bouncer.token' => '12345' }
