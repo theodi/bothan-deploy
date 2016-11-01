@@ -3,9 +3,11 @@ require 'tilt/erubis'
 require 'json'
 require 'heroku/bouncer'
 require 'platform-api'
+require 'pusher'
 
 require_relative 'bothan_deploy/racks'
 require_relative 'bothan_deploy/helpers'
+require_relative 'bothan_deploy/deployment'
 
 module BothanDeploy
   class App < Sinatra::Base

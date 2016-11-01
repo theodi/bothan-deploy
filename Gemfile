@@ -11,6 +11,7 @@ gem 'bootstrap', '4.0.0.alpha4'
 gem 'heroku-bouncer', github: 'heroku/heroku-bouncer'
 gem 'platform-api'
 gem 'dotenv'
+gem 'pusher'
 
 group :test do
   gem 'rspec'
