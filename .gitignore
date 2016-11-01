@@ -1,3 +1,4 @@
 coverage/
 .sass-cache
 /public/css/styles.css
+/.env
