@@ -24,9 +24,8 @@ module BothanDeploy
 
     post '/deploy' do
       halt(401) unless request.env['bouncer.token']
-      heroku = PlatformAPI.connect_oauth(request.env['bouncer.token'])
-      @app = heroku.app_setup.create({source_blob: {url: 'https://github.com/theodi/bothan/tarball/master'}})
-      erb :index, layout: :default
+      BothanDeploy::Deployment.perform_async(request.env['bouncer.token'], params)
+      halt 202
     end
 
     # start the server if ruby file executed directly

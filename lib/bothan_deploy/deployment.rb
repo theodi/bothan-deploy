@@ -1,7 +1,12 @@
 module BothanDeploy
   class Deployment
+    include Sidekiq::Worker
 
     SOURCE_BLOB = 'https://github.com/theodi/bothan/tarball/master'
+
+    def perform(token, params)
+      BothanDeploy::Deployment.new(token, params).build
+    end
 
     def initialize(token, params)
       @heroku = PlatformAPI.connect_oauth(token)
