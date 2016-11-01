@@ -1,5 +1,3 @@
-require 'rack/conneg'
-
 module BothanDeploy
   class App < Sinatra::Base
     set :public_folder, 'public'
