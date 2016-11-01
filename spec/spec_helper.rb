@@ -1,6 +1,9 @@
 require 'coveralls'
 Coveralls.wear_merged!
 
+require 'dotenv'
+Dotenv.load
+
 require 'rack/test'
 require 'bothan_deploy'
 
