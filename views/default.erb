@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <%= erb :'includes/header' %>
+  <body>
+   <nav class="navbar navbar-static-top navbar-light bg-faded">
+   <a href="/" class="navbar-brand"><img src='/assets/logo.png'/> Bothan</a>
+   <ul class="nav navbar-nav">
+       <li class="nav-item">
+         <a class="nav-link" href="http://bothan.io/api.html">API</a></li>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link" href="http://bothan.io/dashboards.html">Dashboards</a></li>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link" href="http://bothan.io/demo.html">Demo</a></li>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link" href="http://bothan.io/get-started.html">Get Started</a></li>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link" href="http://bothan.io/visualisations.html">Visualisations</a></li>
+       </li>
+     </ul>
+   </nav>
+   <div class="jumbotron jumbotron-fluid">
+     <div class="container">
+         <h1 class="display-3"><%= @title %></h1>
+     </div>
+   </div>
+    <div class='container'>
+      <div class='row'>
+        <%= yield %>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <img src="https://labs-logo.herokuapp.com/logo.svg" alt="ODI Labs" id="odi-labs">
+          <p>An <a href="http://theodi.org/labs">ODI Labs</a> experiment</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

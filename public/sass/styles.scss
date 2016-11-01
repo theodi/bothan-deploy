@@ -1,0 +1,23 @@
+@import 'bootstrap';
+
+.navbar-brand img {
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-right: 10px;
+}
+
+.jumbotron {
+  color: #fff;
+  background-image: url(//i.imgur.com/SZ8pEHu.jpg);
+}
+
+footer {
+  background-color: #f7f7f9;
+  padding: 10px 0;
+
+  img {
+    width: 175px;
+    margin: -10px 0 0 -10px;
+  }
+}
