@@ -17,3 +17,9 @@ task :run do
   sh 'bundle exec compass watch . &'
   sh 'bundle exec rackup'
 end
+
+namespace :assets do
+  task :precompile do
+    `compass compile`
+  end
+end
