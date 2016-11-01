@@ -1,3 +1,6 @@
+require 'dotenv'
+Dotenv.load
+
 module BothanDeploy
   class Deployment
     include Sidekiq::Worker
@@ -5,12 +8,9 @@ module BothanDeploy
     SOURCE_BLOB = 'https://github.com/theodi/bothan/tarball/master'
 
     def perform(token, params)
-      BothanDeploy::Deployment.new(token, params).build
-    end
-
-    def initialize(token, params)
       @heroku = PlatformAPI.connect_oauth(token)
       @params = params
+      build
     end
 
     def build
@@ -36,10 +36,19 @@ module BothanDeploy
 
     def report_status
       if @info['status'] == 'succeeded'
-        Pusher['app_status'].trigger('success', { url: @info['resolved_success_url'] })
+        pusher_client['app_status'].trigger('success', { url: @info['resolved_success_url'] })
       elsif @info['status'] == 'failed'
-        Pusher['app_status'].trigger('failed', { message: @info['failure_message'] })
+        pusher_client['app_status'].trigger('failed', { message: @info['failure_message'] })
       end
+    end
+
+    def pusher_client
+      Pusher::Client.new(
+        app_id: ENV['PUSHER_APP_ID'],
+        key: ENV['PUSHER_KEY'],
+        secret: ENV['PUSHER_SECRET'],
+        host: 'api-eu.pusher.com'
+      )
     end
 
   end
