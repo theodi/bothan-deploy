@@ -81,6 +81,20 @@
       </button>
     </div>
 
+    <div class="alert alert-success" role="alert" id="success" hidden>
+      <h4 class="alert-heading">Success!</h4>
+      <p>Your Bothan has been sucessfully deployed!</p>
+      <a href="#" id="viewApp" class="btn btn-secondary" target="_blank">View app <i class="fa fa-external-link" aria-hidden="true"></i>
+</a>&nbsp;<a href="#" id="manageApp" class="btn btn-secondary" target="_blank">Manage app <i class="fa fa-cogs" aria-hidden="true"></i>
+</a>
+    </div>
+
+    <div class="alert alert-danger" role="alert" id="error" hidden>
+      <h4 class="alert-heading">Error!</h4>
+      <p>Sorry, Heroku reported an error with your install - <code></code></p>
+      <p>Tweaking the answers in your form may help</p>
+    </div>
+
   </div>
 </form>
 
@@ -96,10 +110,17 @@
       var pusher = new Pusher('<%= ENV['PUSHER_KEY'] %>');
       var channel = pusher.subscribe('app_status');
       channel.bind('success', function(data) {
-        alert(data.url);
+        $('#loading').addClass('hidden')
+
+        $('#success').attr('hidden', false)
+        $('#viewApp').attr('href', data.url)
+        $('#manageApp').attr('href', 'https://dashboard.heroku.com/apps/' + $('#name').val())
       });
       channel.bind('failed', function(data) {
-        alert(data.message);
+        $('#loading').addClass('hidden')
+
+        $('#error').attr('hidden', false)
+        $('#error code').html(data.message)
       });
     });
   })
