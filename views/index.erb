@@ -3,44 +3,44 @@
 <form action="/deploy" method="post" id='deploy'>
   <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" name="title" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Name of app">
+    <input type="text" name="title" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Name of app" required>
     <small id="titleHelp" class="form-text text-muted">The title of your Bothan instance - i.e. 'My Awesome Metrics'</small>
   </div>
 
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp">
+    <input type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp" required>
     <div class="form-control-feedback"></div>
     <small id="nameHelp" class="form-text text-muted">The name of your app (lowercase letters, numbers and dashes only)</small>
   </div>
 
   <div class="form-group">
     <label for="username">Username</label>
-    <input type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Username">
+    <input type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Username" required>
     <small id="usernameHelp" class="form-text text-muted">The username for adding metrics and editing configuration</small>
   </div>
 
   <div class="form-group">
     <label for="password">Password</label>
-    <input type="text" name="password" class="form-control" id="password" aria-describedby="passwordHelp" placeholder="Password">
+    <input type="text" name="password" class="form-control" id="password" aria-describedby="passwordHelp" placeholder="Password" required>
     <small id="passwordHelp" class="form-text text-muted">The password for adding metrics and editing configuration</small>
   </div>
 
   <div class="form-group">
     <label for="description">Description</label>
-    <textarea class="form-control" id="description" name="description" aria-describedby="descriptionHelp" rows="3"></textarea>
+    <textarea class="form-control" id="description" name="description" aria-describedby="descriptionHelp" rows="3" required></textarea>
     <small id="descriptionHelp" class="form-text text-muted">The description shown on the homepage of your Bothan instance</small>
   </div>
 
   <div class="form-group">
     <label for="description">Publisher Name</label>
-    <input type="text" name="publisherName" class="form-control" id="publisherName" aria-describedby="publisherNameHelp" placeholder="Publisher Name">
+    <input type="text" name="publisherName" class="form-control" id="publisherName" aria-describedby="publisherNameHelp" placeholder="Publisher Name" required>
     <small id="publisherNameHelp" class="form-text text-muted">The name of the person or organisation publishing the data</small>
   </div>
 
   <div class="form-group">
     <label for="description">Publisher Website</label>
-    <input type="text" name="publisherURL" class="form-control" id="publisherURL" aria-describedby="publisherURLHelp" placeholder="Publisher Website">
+    <input type="text" name="publisherURL" class="form-control" id="publisherURL" aria-describedby="publisherURLHelp" placeholder="Publisher Website" required>
     <small id="publisherNameHelp" class="form-text text-muted">The website of the person or organisation publishing the data</small>
   </div>
 
