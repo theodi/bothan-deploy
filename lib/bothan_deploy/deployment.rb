@@ -1,6 +1,8 @@
 require 'dotenv'
 Dotenv.load
 
+require 'odlifier'
+
 module BothanDeploy
   class Deployment
     include Sidekiq::Worker
@@ -37,17 +39,21 @@ module BothanDeploy
     def env_overrides
       {
         env: {
-          'METRICS_API_USERNAME'        => 'odi',
-          'METRICS_API_PASSWORD'        => 'ddsasfdsfsdfsdf',
-          'METRICS_API_TITLE'           => 'ODI Metrics',
-          'METRICS_API_DESCRIPTION'     => 'This API contains a list of all metrics collected by the Open Data Institute since 2013',
-          'METRICS_API_LICENSE_NAME'    => 'Creative Commons Attribution-ShareAlike',
-          'METRICS_API_LICENSE_URL'     => 'https://creativecommons.org/licenses/by-sa/4.0/',
-          'METRICS_API_PUBLISHER_NAME'  => 'Open Data Institute',
-          'METRICS_API_PUBLISHER_URL'   => 'http://theodi.org',
-          'METRICS_API_CERTIFICATE_URL' => 'https://certificates.theodi.org/en/datasets/213482/certificate'
+          'METRICS_API_USERNAME'        => @params['username'],
+          'METRICS_API_PASSWORD'        => @params['password'],
+          'METRICS_API_TITLE'           => @params['title'],
+          'METRICS_API_DESCRIPTION'     => @params['description'],
+          'METRICS_API_LICENSE_NAME'    => (license.nil? ? '' : license.title),
+          'METRICS_API_LICENSE_URL'     => (license.nil? ? '' : license.url),
+          'METRICS_API_PUBLISHER_NAME'  => @params['publisherName'],
+          'METRICS_API_PUBLISHER_URL'   => @params['publisherUrl'],
+          'METRICS_API_CERTIFICATE_URL' => '#'
         }
       }
+    end
+
+    def license
+      Odlifier::License.define(@params['license']) if @params['license']
     end
 
     def check_status

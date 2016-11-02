@@ -13,6 +13,7 @@ gem 'platform-api'
 gem 'dotenv'
 gem 'pusher'
 gem 'sidekiq'
+gem 'odlifier'
 
 group :test do
   gem 'rspec'
