@@ -16,6 +16,7 @@ module BothanDeploy
 
     it 'queues a deploy job' do
       login!
+      expect(BothanDeploy::Deployment).to receive(:perform_async).with('12345', { 'foo' => 'bar' })
       post '/deploy', { 'foo' => 'bar' }, { 'bouncer.token' => '12345' }
       expect(last_response.status).to eq(202)
     end
