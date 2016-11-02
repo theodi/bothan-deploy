@@ -35,7 +35,7 @@ module BothanDeploy
         'description' => 'Here is a description',
         'license' => 'CC-BY-4.0',
         'publisherName' => 'Me',
-        'publisherUrl' => 'http://example.com'
+        'publisherURL' => 'http://example.com'
       }
 
       # For some reason Odlifier won't work in test

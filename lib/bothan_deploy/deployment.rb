@@ -49,7 +49,7 @@ module BothanDeploy
           'METRICS_API_LICENSE_NAME'    => (license.nil? ? '' : license.title),
           'METRICS_API_LICENSE_URL'     => (license.nil? ? '' : license.url),
           'METRICS_API_PUBLISHER_NAME'  => @params['publisherName'],
-          'METRICS_API_PUBLISHER_URL'   => @params['publisherUrl'],
+          'METRICS_API_PUBLISHER_URL'   => @params['publisherURL'],
           'METRICS_API_CERTIFICATE_URL' => '#'
         }
       }
