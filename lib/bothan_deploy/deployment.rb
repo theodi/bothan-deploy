@@ -14,7 +14,7 @@ module BothanDeploy
     end
 
     def build
-      @app = @heroku.app_setup.create({source_blob: {url: SOURCE_BLOB}})
+      @app = create_app
       @id = @app['id']
       @complete = false
       check_status
@@ -22,6 +22,33 @@ module BothanDeploy
     end
 
     private
+
+    def create_app
+      @heroku.app_setup.create(
+        {
+          source_blob: {
+            url: SOURCE_BLOB
+          },
+          overrides: env_overrides
+        }
+      )
+    end
+
+    def env_overrides
+      {
+        env: {
+          'METRICS_API_USERNAME'        => 'odi',
+          'METRICS_API_PASSWORD'        => 'ddsasfdsfsdfsdf',
+          'METRICS_API_TITLE'           => 'ODI Metrics',
+          'METRICS_API_DESCRIPTION'     => 'This API contains a list of all metrics collected by the Open Data Institute since 2013',
+          'METRICS_API_LICENSE_NAME'    => 'Creative Commons Attribution-ShareAlike',
+          'METRICS_API_LICENSE_URL'     => 'https://creativecommons.org/licenses/by-sa/4.0/',
+          'METRICS_API_PUBLISHER_NAME'  => 'Open Data Institute',
+          'METRICS_API_PUBLISHER_URL'   => 'http://theodi.org',
+          'METRICS_API_CERTIFICATE_URL' => 'https://certificates.theodi.org/en/datasets/213482/certificate'
+        }
+      }
+    end
 
     def check_status
       while @complete == false do
