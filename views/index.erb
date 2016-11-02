@@ -2,22 +2,86 @@
 <%= @app %>
 <form action="/deploy" method="post" id='deploy'>
   <div class="form-group">
-    <label for="name">App name</label>
-    <input type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Name of app">
-    <small id="nameHelp" class="form-text text-muted">The title of your Bothan instance - i.e. 'My Awesome Metrics'</small>
+    <label for="title">Title</label>
+    <input type="text" name="title" class="form-control" id="title" aria-describedby="titleHelp" placeholder="Name of app">
+    <small id="titleHelp" class="form-text text-muted">The title of your Bothan instance - i.e. 'My Awesome Metrics'</small>
   </div>
 
   <div class="form-group">
-    <label for="description">App description</label>
-    <input type="text" name= "description" class="form-control" id="description" aria-describedby="nameHelp" placeholder="Name of app">
-    <small id="nameHelp" class="form-text text-muted">The description for your Bothan instance</small>
+    <label for="name">Name</label>
+    <input type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp">
+    <small id="nameHelp" class="form-text text-muted">The name of your app (lowercase letters, numbers and dashes only)</small>
   </div>
 
-  <button type="submit" class="btn btn-primary">
-    Deploy
-    <i class="fa fa-refresh fa-spin hidden" aria-hidden="true" id="loading"></i>
-  </button>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" name="username" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Username">
+    <small id="usernameHelp" class="form-text text-muted">The username for adding metrics and editing configuration</small>
+  </div>
 
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="text" name="password" class="form-control" id="password" aria-describedby="passwordHelp" placeholder="Password">
+    <small id="passwordHelp" class="form-text text-muted">The password for adding metrics and editing configuration</small>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" name="description" aria-describedby="descriptionHelp" rows="3"></textarea>
+    <small id="descriptionHelp" class="form-text text-muted">The description shown on the homepage of your Bothan instance</small>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Publisher Name</label>
+    <input type="text" name="publisherName" class="form-control" id="publisherName" aria-describedby="publisherNameHelp" placeholder="Publisher Name">
+    <small id="publisherNameHelp" class="form-text text-muted">The name of the person or organisation publishing the data</small>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Publisher Website</label>
+    <input type="text" name="publisherURL" class="form-control" id="publisherURL" aria-describedby="publisherURLHelp" placeholder="Publisher Website">
+    <small id="publisherNameHelp" class="form-text text-muted">The website of the person or organisation publishing the data</small>
+  </div>
+
+  <fieldset class="form-group" aria-describedby="openDataHelp">
+    <legend>Release your metrics as open data?</legend>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input openData" name="openData" value="yes">
+        Yes
+      </label>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input openData" name="openData" value="no">
+        No
+      </label>
+    </div>
+    <small id="openDataHelp" class="form-text text-muted">Choosing 'Yes' will allow you to specify a license to release your data under</small>
+  </fieldset>
+
+    <div id="licenseWrapper" hidden>
+      <div class="form-group">
+        <label for="license">License</label>
+        <select class="form-control" id="license" name="license">
+          <option value="CC-BY-4.0">Creative Commons Attribution 4.0</option>
+          <option value="CC-BY-SA-4.0">Creative Commons Attribution Share-Alike 4.0</option>
+          <option value="CC0-1.0">CC0 1.0</option>
+          <option value="OGL-UK-3.0">Open Government Licence 3.0 (United Kingdom)</option>
+          <option value="ODC-BY-1.0">Open Data Commons Attribution License 1.0</option>
+          <option value="ODC-PDDL-1.0">Open Data Commons Public Domain Dedication and Licence 1.0</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">
+        Deploy
+        <i class="fa fa-refresh fa-spin hidden" aria-hidden="true" id="loading"></i>
+      </button>
+    </div>
+
+  </div>
 </form>
 
 <script src="//js.pusher.com/2.2/pusher.min.js"></script>
@@ -38,5 +102,20 @@
         alert(data.message);
       });
     });
+  })
+
+  $('#title').keyup(function() {
+    title = $(this).val()
+    slug = title.toLowerCase().replace(/[^\w ]+/g,"").replace(/ +/g,"-").replace(/^-+|-+$/,"")
+    $('#name').val(slug)
+    $('#nameHelp').html("Your Bothan instance will be hosted at https://" + slug + ".herokuapp.com")
+  })
+
+  $('.openData').change(function() {
+    if ($(this).val() == 'yes') {
+      $('#licenseWrapper').attr('hidden', false)
+    } else {
+      $('#licenseWrapper').attr('hidden', true)
+    }
   })
 </script>
