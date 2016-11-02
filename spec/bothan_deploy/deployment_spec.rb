@@ -28,6 +28,7 @@ module BothanDeploy
 
     it 'sets the correct env variables' do
       params = {
+        'name' => 'my-awesome-app',
         'username' => 'username',
         'password' => 'password',
         'title' => 'This is a title',
@@ -46,6 +47,9 @@ module BothanDeploy
       }
 
       expect(@app_setup).to receive(:create).with({
+        app: {
+          name: 'my-awesome-app'
+        },
         source_blob: {
           url: 'https://github.com/theodi/bothan/tarball/master'
         },

@@ -28,6 +28,9 @@ module BothanDeploy
     def create_app
       @heroku.app_setup.create(
         {
+          app: {
+            name: @params['name']
+          },
           source_blob: {
             url: SOURCE_BLOB
           },
