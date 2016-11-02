@@ -10,6 +10,7 @@
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp">
+    <div class="form-control-feedback"></div>
     <small id="nameHelp" class="form-text text-muted">The name of your app (lowercase letters, numbers and dashes only)</small>
   </div>
 
@@ -75,7 +76,7 @@
     </div>
 
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" id="submit">
         Deploy
         <i class="fa fa-refresh fa-spin hidden" aria-hidden="true" id="loading"></i>
       </button>
@@ -129,7 +130,37 @@
     title = $(this).val()
     slug = title.toLowerCase().replace(/[^\w ]+/g,"").replace(/ +/g,"-").replace(/^-+|-+$/,"")
     $('#name').val(slug)
-    $('#nameHelp').html("Your Bothan instance will be hosted at https://" + slug + ".herokuapp.com")
+    $('#name').trigger('keyup')
+  })
+
+  $('#name').keyup(function() {
+    $input = $(this)
+    slug = $input.val()
+    if (slug.length > 0) {
+      $.get('https://api.heroku.com/apps/' + slug).always(function(data, textStatus) {
+        if (data.status == 404) {
+          $input.parent('div').removeClass('has-danger')
+          $input.parent('div').addClass('has-success')
+          $input.removeClass('form-control-danger')
+          $input.addClass('form-control-success')
+          $input.parent('div').find('.form-control-feedback').html("Your Bothan instance will be hosted at https://" + slug + ".herokuapp.com")
+          $('#submit').attr('disabled', false)
+        } else {
+          $input.parent('div').removeClass('has-success')
+          $input.parent('div').addClass('has-danger')
+          $input.removeClass('form-control-success')
+          $input.addClass('form-control-danger')
+          $input.parent('div').find('.form-control-feedback').html("Application name <code>"+ slug +"</code> is not available.")
+          $('#submit').attr('disabled', true)
+        }
+      })
+    } else {
+      $input.parent('div').removeClass('has-danger')
+      $input.parent('div').removeClass('has-success')
+      $input.removeClass('form-control-danger')
+      $input.removeClass('form-control-success')
+      $input.parent('div').find('.form-control-feedback').html('')
+    }
   })
 
   $('.openData').change(function() {
