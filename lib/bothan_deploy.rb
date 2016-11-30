@@ -5,12 +5,15 @@ require 'heroku/bouncer'
 require 'platform-api'
 require 'pusher'
 require 'sidekiq'
+require 'sinatra/activerecord'
 
 require_relative 'bothan_deploy/racks'
 require_relative 'bothan_deploy/deployment'
 
 module BothanDeploy
   class App < Sinatra::Base
+    register Sinatra::ActiveRecordExtension
+    set :database_file, '../../config/database.yml'
 
     use Rack::Session::Cookie, secret: ENV['BOTHAN_DEPLOY_SESSION_SECRET'], key: 'bothan_deploy_session'
     use Heroku::Bouncer,
