@@ -20,5 +20,20 @@ module BothanDeploy
       post '/deploy', { 'foo' => 'bar' }, { 'bouncer.token' => '12345' }
       expect(last_response.status).to eq(202)
     end
+
+    it 'returns 412 if the signature is not provided' do
+      post '/update', {payload: { thing: 'woooo' }.to_json }, {}
+      expect(last_response.status).to eq(412)
+    end
+
+    it 'returns 401 if the signature is incorrect' do
+      post '/update', {payload: { thing: 'woooo' }.to_json }, { 'HTTP_X_HUB_SIGNATURE' => 'sha1=9cb7f1850933d76def6f6e723dd76b541f744f59'}
+      expect(last_response.status).to eq(401)
+    end
+
+    it 'works if the signature is correct' do
+      post '/update', {payload: { thing: 'woooo' }.to_json }, { 'HTTP_X_HUB_SIGNATURE' => 'sha1=62957779cf2d2e83ad38d4d0c1d12d0fb76413d4'}
+      expect(last_response.status).to eq(202)
+    end
   end
 end
