@@ -1,0 +1,22 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: bothan_deploy
+  pool: 2
+  username: root
+  password:
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: bothan_deploy_test
+  pool: 2
+  username: root
+  password:
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: bothan_deploy
+  pool: 2
+  url: <%= ENV['DATABASE_URL'] %>
