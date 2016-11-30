@@ -72,6 +72,15 @@ module BothanDeploy
       deployment = described_class.new.perform('some-token', params)
     end
 
+    it 'saves the app to the database' do
+      expect(@app_setup).to receive(:info).with('foo-bar').and_return(pending_status, pending_status, complete_status)
+      expect(@pusher_channel).to receive(:trigger).with('success', { url: 'http://example.org'})
+      deployment = described_class.new.perform('some-token', {some: 'params', and: 'junk'})
+      expect(Bothan.count).to eq(1)
+      expect(Bothan.first.app_id).to eq('foo-bar')
+      expect(Bothan.first.token).to eq('some-token')
+    end
+
     private
 
     def pending_status

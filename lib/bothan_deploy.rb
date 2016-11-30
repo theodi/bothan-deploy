@@ -1,3 +1,5 @@
+$:.unshift File.dirname(__FILE__)
+
 require 'sinatra/base'
 require 'tilt/erubis'
 require 'json'
@@ -7,8 +9,8 @@ require 'pusher'
 require 'sidekiq'
 require 'sinatra/activerecord'
 
-require_relative 'bothan_deploy/racks'
-require_relative 'bothan_deploy/deployment'
+require 'bothan_deploy/racks'
+require 'bothan_deploy/deployment'
 
 module BothanDeploy
   class App < Sinatra::Base

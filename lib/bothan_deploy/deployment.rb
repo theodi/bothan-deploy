@@ -2,6 +2,7 @@ require 'dotenv'
 Dotenv.load
 
 require 'odlifier'
+require 'models/bothan'
 
 module BothanDeploy
   class Deployment
@@ -10,7 +11,8 @@ module BothanDeploy
     SOURCE_BLOB = 'https://github.com/theodi/bothan/tarball/master'
 
     def perform(token, params)
-      @heroku = PlatformAPI.connect_oauth(token)
+      @token = token
+      @heroku = PlatformAPI.connect_oauth(@token)
       @params = params
       build
     end
@@ -73,9 +75,14 @@ module BothanDeploy
     def report_status
       if @info['status'] == 'succeeded'
         pusher_client['app_status'].trigger('success', { url: @info['resolved_success_url'] })
+        create_in_database
       elsif @info['status'] == 'failed'
         pusher_client['app_status'].trigger('failed', { message: @info['failure_message'] })
       end
+    end
+
+    def create_in_database
+      Bothan.create(app_id: @id, token: @token)
     end
 
     def pusher_client
