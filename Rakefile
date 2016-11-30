@@ -1,3 +1,5 @@
+require 'sinatra/activerecord'
+require 'sinatra/activerecord/rake'
 require File.join(File.dirname(__FILE__), 'lib/bothan_deploy.rb')
 
 unless ENV['RACK_ENV'] == 'production'
