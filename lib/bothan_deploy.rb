@@ -12,6 +12,8 @@ require 'sinatra/activerecord'
 require 'bothan_deploy/racks'
 require 'bothan_deploy/deployment'
 
+require 'models/bothan'
+
 module BothanDeploy
   class App < Sinatra::Base
     register Sinatra::ActiveRecordExtension
@@ -38,6 +40,7 @@ module BothanDeploy
       payload_body = request.body.read
       verify_signature(payload_body)
       json = JSON.parse(params[:payload])
+      Bothan.delay.build_all if json['ref'] == 'refs/heads/master'
       halt 202
     end
 

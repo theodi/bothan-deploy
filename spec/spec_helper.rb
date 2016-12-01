@@ -6,6 +6,10 @@ Dotenv.load
 
 ENV['RACK_ENV'] = 'test'
 
+require 'sidekiq/testing'
+
+Sidekiq::Testing.fake!
+
 require 'rack/test'
 require 'bothan_deploy'
 require 'database_cleaner'

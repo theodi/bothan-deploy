@@ -35,5 +35,13 @@ module BothanDeploy
       post '/update', {payload: { thing: 'woooo' }.to_json }, { 'HTTP_X_HUB_SIGNATURE' => 'sha1=62957779cf2d2e83ad38d4d0c1d12d0fb76413d4'}
       expect(last_response.status).to eq(202)
     end
+
+    it 'queues a deployment if the branch is master' do
+      expect(Sidekiq::Extensions::DelayedClass.jobs.count).to eq(0)
+      expect_any_instance_of(app).to receive(:verify_signature) { nil }
+      post '/update', {payload: { ref: 'refs/heads/master' }.to_json }
+      expect(last_response.status).to eq(202)
+      expect(Sidekiq::Extensions::DelayedClass.jobs.count).to eq(1)
+    end
   end
 end
