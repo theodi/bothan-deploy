@@ -15,10 +15,11 @@ module BothanDeploy
     end
 
     it 'queues a deploy job' do
+      expect(Sidekiq::Extensions::DelayedClass.jobs.count).to eq(0)
       login!
-      expect(BothanDeploy::Deployment).to receive(:perform_async).with('12345', { 'foo' => 'bar' })
       post '/deploy', { 'foo' => 'bar' }, { 'bouncer.token' => '12345' }
       expect(last_response.status).to eq(202)
+      expect(Sidekiq::Extensions::DelayedClass.jobs.count).to eq(1)
     end
 
     it 'returns 412 if the signature is not provided' do

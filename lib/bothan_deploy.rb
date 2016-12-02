@@ -10,7 +10,6 @@ require 'sidekiq'
 require 'sinatra/activerecord'
 
 require 'bothan_deploy/racks'
-require 'bothan_deploy/deployment'
 
 require 'models/bothan'
 
@@ -31,7 +30,7 @@ module BothanDeploy
 
     post '/deploy' do
       halt(401) unless request.env['bouncer.token']
-      BothanDeploy::Deployment.perform_async(request.env['bouncer.token'], params)
+      Bothan.delay.create(token: request.env['bouncer.token'], params: params)
       halt 202
     end
 
