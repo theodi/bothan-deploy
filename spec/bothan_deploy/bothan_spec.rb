@@ -1,5 +1,6 @@
-module BothanDeploy
-  describe Deployment do
+describe Bothan do
+
+  context 'creating' do
 
     before(:each) do
       @platform_api = double("PlatformAPI")
@@ -17,13 +18,13 @@ module BothanDeploy
     it 'builds and reports success' do
       expect(@app_setup).to receive(:info).with('foo-bar').and_return(pending_status, pending_status, complete_status)
       expect(@pusher_channel).to receive(:trigger).with('success', { url: 'http://example.org'})
-      deployment = described_class.new.perform('some-token', {some: 'params', and: 'junk'})
+      deployment = Bothan.create(token: 'some-token', params: {some: 'params', and: 'junk'})
     end
 
     it 'builds and reports an error' do
       expect(@app_setup).to receive(:info).with('foo-bar').and_return(pending_status, pending_status, pending_status, failed_status)
       expect(@pusher_channel).to receive(:trigger).with('failed', { message: 'This didn\'t work' })
-      deployment = described_class.new.perform('some-token', {some: 'params', and: 'junk'})
+      deployment = Bothan.create(token: 'some-token', params: {some: 'params', and: 'junk'})
     end
 
     it 'sets the correct env variables' do
@@ -69,10 +70,68 @@ module BothanDeploy
       }).and_return({ 'id' => 'foo-bar' })
       expect(@app_setup).to receive(:info).with('foo-bar').and_return(pending_status, pending_status, complete_status)
       expect(@pusher_channel).to receive(:trigger).with('success', { url: 'http://example.org'})
-      deployment = described_class.new.perform('some-token', params)
+      deployment = Bothan.create(token: 'some-token', params: params)
     end
 
-    private
+    it 'saves the app to the database' do
+      expect(@app_setup).to receive(:info).with('foo-bar').and_return(pending_status, pending_status, complete_status)
+      expect(@pusher_channel).to receive(:trigger).with('success', { url: 'http://example.org'})
+      deployment = Bothan.create(token: 'some-token', params: {some: 'params', and: 'junk'})
+      expect(Bothan.count).to eq(1)
+      expect(Bothan.first.app_id).to eq('foo-bar')
+      expect(Bothan.first.token).to eq('some-token')
+    end
+
+  end
+
+  context 'updating' do
+
+    before(:each) do
+      allow_any_instance_of(Bothan).to receive(:create_app)
+      allow_any_instance_of(Bothan).to receive(:check_status)
+
+      @heroku_stub = double(PlatformAPI::Client)
+      allow(PlatformAPI).to receive(:connect_oauth) {
+        @heroku_stub
+      }
+    end
+
+    it 'returns a heroku connection' do
+      bothan = Bothan.create(app_id: '34234234', token: 'my-token')
+      expect(PlatformAPI).to receive(:connect_oauth).with('my-token') {
+        @heroku_stub
+      }
+      expect(bothan.send(:heroku)).to eq(@heroku_stub)
+    end
+
+    it 'creates a new build' do
+      bothan = Bothan.create(app_id: '34234234', token: 'my-token')
+      @build = double("PlatformAPI::Build")
+      expect(@heroku_stub).to receive(:build) {
+        @build
+      }
+      expect(@build).to receive(:create).with('34234234', {
+        source_blob: {
+          url: Bothan::SOURCE_BLOB
+        }
+      })
+      bothan.build
+    end
+
+    it 'builds all bothans' do
+      bothans = []
+      5.times do |i|
+        b = Bothan.create(app_id: i, token: "token-#{i}")
+        expect(b).to receive(:build) { nil }
+        bothans << b
+      end
+      expect(Bothan).to receive(:all) { bothans }
+      Bothan.build_all
+    end
+
+  end
+
+  private
 
     def pending_status
       { 'status' => 'pending' }
@@ -86,5 +145,4 @@ module BothanDeploy
       { 'status' => 'failed', 'failure_message' => 'This didn\'t work' }
     end
 
-  end
 end

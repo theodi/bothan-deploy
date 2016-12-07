@@ -14,6 +14,8 @@ gem 'dotenv'
 gem 'pusher'
 gem 'sidekiq'
 gem 'odlifier'
+gem 'pg'
+gem 'sinatra-activerecord'
 
 group :test do
   gem 'rspec'
@@ -25,4 +27,5 @@ group :test do
   gem 'jasmine'
   gem 'pry'
   gem 'actionpack'
+  gem 'database_cleaner'
 end

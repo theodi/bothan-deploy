@@ -4,9 +4,17 @@ Coveralls.wear_merged!
 require 'dotenv'
 Dotenv.load
 
+ENV['RACK_ENV'] = 'test'
+
+require 'sidekiq/testing'
+
+Sidekiq::Testing.fake!
+
 require 'rack/test'
 require 'bothan_deploy'
+require 'database_cleaner'
 
+DatabaseCleaner.strategy = :truncation
 OmniAuth.config.test_mode = true
 
 RSpec.configure do |config|
@@ -49,5 +57,14 @@ RSpec.configure do |config|
 
   def default_fetched_user_info
     { 'email' => 'joe@a.com', 'id' => 'uid_123@heroku.com', 'allow_tracking' => true, 'oauth_token' => '12345' }
+  end
+
+  config.before(:each) do
+    Sidekiq::Worker.clear_all
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 end
