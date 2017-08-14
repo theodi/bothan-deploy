@@ -27,6 +27,12 @@ module BothanDeploy
       @title = 'Deploy your own Bothan'
       erb :index, layout: :default
     end
+    
+    get '/statistics' do
+      @bothans = Bothan.statistics
+      @title = "Total number of Bothan Deploys: #{@bothans}"
+      erb :stats, layout: :default
+    end
 
     post '/deploy' do
       halt(401) unless request.env['bouncer.token']
