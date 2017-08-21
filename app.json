@@ -49,7 +49,6 @@
     }
   },
   "formation": {
-
   },
   "addons": [
     "heroku-postgresql",
