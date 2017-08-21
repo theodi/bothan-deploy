@@ -1,0 +1,63 @@
+{
+  "name": "bothan-deploy",
+  "description": "",
+  "scripts": {
+    "postdeploy": "RACK_ENV=test bundle exec rake db:create && bundle exec rake db:migrate"
+  },
+  "env": {
+    "BOTHAN_DEPLOY_SESSION_SECRET": {
+      "required": true
+    },
+    "GITHUB_WEBHOOK_SECRET": {
+      "required": true
+    },
+    "HEROKU_BOUNCER_SECRET": {
+      "required": true
+    },
+    "HEROKU_OAUTH_ID": {
+      "required": true
+    },
+    "HEROKU_OAUTH_SECRET": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "PUSHER_APP_ID": {
+      "required": true
+    },
+    "PUSHER_KEY": {
+      "required": true
+    },
+    "PUSHER_SECRET": {
+      "required": true
+    },
+    "PUSHER_SOCKET_URL": {
+      "required": true
+    },
+    "PUSHER_URL": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "REDIS_PROVIDER": {
+      "required": true
+    },
+    "REDIS_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql",
+    "pusher",
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}
