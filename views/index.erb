@@ -138,12 +138,14 @@
     slug = $input.val()
     if (slug.length > 0) {
         $.ajax({
-            url: 'https://api.heroku.com/apps/'+slug,
-            headers: 'application/vnd.heroku+json; version=3'
+            url: 'https://api.heroku.com/apps/' + slug,
+            headers: {
+                'Accept': 'application/vnd.heroku+json; version=3'
+            }
         })
           .always(function(data, textStatus) {
         if (data.status == 404) {
-            console.log(slug)
+            console.log(JSON.stringify(data, null, 4))
           $input.parent('div').removeClass('has-danger')
           $input.parent('div').addClass('has-success')
           $input.removeClass('form-control-danger')
@@ -151,7 +153,7 @@
           $input.parent('div').find('.form-control-feedback').html("Your Bothan instance will be hosted at https://" + slug + ".herokuapp.com")
           $('#submit').attr('disabled', false)
         } else {
-            console.log(slug);
+            console.log(JSON.stringify(data, null, 4))
           $input.parent('div').removeClass('has-success')
           $input.parent('div').addClass('has-danger')
           $input.removeClass('form-control-success')
