@@ -145,7 +145,6 @@
         })
           .always(function(data, textStatus) {
         if (data.status == 404) {
-            console.log(JSON.stringify(data, null, 4))
           $input.parent('div').removeClass('has-danger')
           $input.parent('div').addClass('has-success')
           $input.removeClass('form-control-danger')
@@ -153,7 +152,6 @@
           $input.parent('div').find('.form-control-feedback').html("Your Bothan instance will be hosted at https://" + slug + ".herokuapp.com")
           $('#submit').attr('disabled', false)
         } else {
-            console.log(JSON.stringify(data, null, 4))
           $input.parent('div').removeClass('has-success')
           $input.parent('div').addClass('has-danger')
           $input.removeClass('form-control-success')
