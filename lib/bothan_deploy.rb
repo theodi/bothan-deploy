@@ -26,8 +26,6 @@ module BothanDeploy
         allow_anonymous: lambda { |req| /statistics/.match(req.fullpath) }
 
     get '/' do
-      
-    end
       @title = 'Deploy your own Bothan'
       erb :index, layout: :default
     end
