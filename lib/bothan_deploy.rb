@@ -22,7 +22,8 @@ module BothanDeploy
     use Rack::Session::Cookie, secret: ENV['BOTHAN_DEPLOY_SESSION_SECRET'], key: 'bothan_deploy_session'
     use Heroku::Bouncer,
       oauth: { id: ENV['HEROKU_OAUTH_ID'], secret: ENV['HEROKU_OAUTH_SECRET'], scope: 'write-protected' },
-      secret: ENV['HEROKU_BOUNCER_SECRET'], expose_token: true, skip: lambda { |env| env['PATH_INFO'] == '/update' }
+      secret: ENV['HEROKU_BOUNCER_SECRET'], expose_token: true, skip: lambda { |env| env['PATH_INFO'] == '/update' },
+        allow_anonymous: lambda { |req| /statistics/.match(req.fullpath) }
 
     get '/' do
       @title = 'Deploy your own Bothan'
