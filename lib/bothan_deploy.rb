@@ -8,6 +8,7 @@ require 'platform-api'
 require 'pusher'
 require 'sidekiq'
 require 'sinatra/activerecord'
+require 'json'
 
 require 'bothan_deploy/racks'
 
@@ -26,6 +27,17 @@ module BothanDeploy
     get '/' do
       @title = 'Deploy your own Bothan'
       erb :index, layout: :default
+    end
+    
+    get '/statistics' do
+      @bothans = Bothan.statistics
+      @title = "Total number of Bothan Deploys: #{@bothans}"
+      erb :stats, layout: :default
+    end
+
+    get '/statistics.json' do
+      content_type :json
+      { :total_bothan_deploys => Bothan.statistics}.to_json
     end
 
     post '/deploy' do

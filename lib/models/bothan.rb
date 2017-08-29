@@ -21,6 +21,10 @@ class Bothan < ActiveRecord::Base
     })
   end
 
+  def self.statistics
+    self.count
+  end
+
   private
 
     def check_status

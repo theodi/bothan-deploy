@@ -13,6 +13,8 @@ Sidekiq::Testing.fake!
 require 'rack/test'
 require 'bothan_deploy'
 require 'database_cleaner'
+require 'pry'
+require 'json'
 
 DatabaseCleaner.strategy = :truncation
 OmniAuth.config.test_mode = true

@@ -2,3 +2,9 @@ coverage/
 .sass-cache
 /public/css/styles.css
 /.env
+
+# IDE
+.idea/*
+
+#testing/debugging
+.byebug_history

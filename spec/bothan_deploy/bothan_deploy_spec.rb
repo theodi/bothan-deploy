@@ -44,5 +44,17 @@ module BothanDeploy
       expect(last_response.status).to eq(202)
       expect(Sidekiq::Extensions::DelayedClass.jobs.count).to eq(1)
     end
+
+    it 'serves the number of deploys as JSON data' do
+      allow_any_instance_of(Bothan).to receive(:create_app)
+      allow_any_instance_of(Bothan).to receive(:check_status)
+      Bothan.create(token: 'some-token', params: {some: 'params', and: 'junk'})
+      login!
+      get '/statistics.json'
+      expect(last_response.status).to eq(200)
+      served_data = JSON.parse(last_response.body)
+      expect(served_data["total_bothan_deploys"]).to eq 1
+    end
+
   end
 end
