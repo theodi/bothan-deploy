@@ -169,7 +169,7 @@ GEM
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    pg (0.18.4)
+    pg (0.21.0)
     phantomjs (2.1.1.0)
     platform-api (0.8.0)
       heroics (~> 0.0.17)
