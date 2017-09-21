@@ -11,7 +11,7 @@ A Sinatra app and workers that allows deployment of a [Bothan](https://github.co
 ## Summary of features
 
 Generate a form that elicits all the user information required to establish a Heroku hosted instance of Bothan.
-Tasks/workers (?) that automate the process of deploying to Heroku
+Tasks/workers (??) that automate the process of deploying to Heroku
 
 ## Development
 
@@ -23,7 +23,7 @@ The application uses postgres for data persistence
 ### Environment variables
 
 The following environment variables are required to test this application
-
+```
 HEROKU_OAUTH_ID=''
 HEROKU_OAUTH_SECRET=''
 HEROKU_BOUNCER_SECRET=''
@@ -32,10 +32,12 @@ PUSHER_APP_ID=
 PUSHER_KEY=''
 PUSHER_SECRET=''
 GITHUB_WEBHOOK_SECRET=''
+```
 
 ### Specific Development Instructions
 
-This application is designed to run live hence the `.env` variables stipulated above
+This application is designed to run live on Heroku hence the `.env` variables stipulated above. 
+
 
 ### Database Configuration
 
@@ -43,7 +45,8 @@ Execute `RACK_ENV=test bundle exec rake db:create && bundle exec rake db:migrate
 
 ### Development: Running the full application locally
 
-execute `bundle exec rackup config.ru` to host the form on a `tcp://` port
+execute `bundle exec rackup config.ru` to host the form on a `tcp://` port  
+Running the application locally can sometimes result in your local instance redirecting to the live bothan deploy (at deploy.bothan.io) as a consequence of Heroku Bouncer - if you encounter this error try disabling the `HEROKU_OAUTH_SECRET` env variable.
 
 ### Tests
 
